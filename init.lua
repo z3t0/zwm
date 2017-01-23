@@ -41,20 +41,33 @@ end
 load_config(config_file_path)
 
 if config then
+    hs.printf("Config loaded")
+
     if config["autoReload"] then
         local config_watcher = hs.pathwatcher.new(config_file_dir, reload_config):start()
     end
 
-    local mod = config["key_bindings"]["mod"]
+    local mod = config["mod"]
 
     -- key bindings
-    if config["terminal"] then
-        local key = config["terminal"]["key"]
-        local app = config["terminal"]["app"]
-       
-        hs.hotkey.bind(mod, key, function()
-            hs.application.open(app)
-        end)
+    if config["key_bindings"] then
+
+        for binding, info in pairs(config["key_bindings"]) do
+            
+            if info["type"] == "application" then
+
+                if (info["key"] ~= "" and info["app"] ~= "") then 
+                    hs.hotkey.bind(mod, info["key"], nil, function() 
+                        hs.application.open(info["app"])
+                    end)
+                end
+
+            else
+            print("error: " .. info["type"] .. " not implemented")
+
+            end
+            
+        end
     end
 else
     hs.alert.show("Config not loaded properly")
