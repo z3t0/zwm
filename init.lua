@@ -6,43 +6,6 @@ Licensed under the MIT License
 
  --]]
 
--- utility functions
--- Submitted PR (https://github.com/Hammerspoon/hammerspoon/pull/1203) to add this upstream
-function print_r ( t )  
-    local print_r_cache={}
-    local function sub_print_r(t,indent)
-        if (print_r_cache[tostring(t)]) then
-            print(indent.."*"..tostring(t))
-        else
-            print_r_cache[tostring(t)]=true
-            if (type(t)=="table") then
-                for pos,val in pairs(t) do
-                    if (type(val)=="table") then
-                        print(indent.."["..pos.."] => "..tostring(t).." {")
-                        sub_print_r(val,indent..string.rep(" ",string.len(pos)+8))
-                        print(indent..string.rep(" ",string.len(pos)+6).."}")
-                    elseif (type(val)=="string") then
-                        print(indent.."["..pos..'] => "'..val..'"')
-                    else
-                        print(indent.."["..pos.."] => "..tostring(val))
-                    end
-                end
-            else
-                print(indent..tostring(t))
-            end
-        end
-    end
-    if (type(t)=="table") then
-        print(tostring(t).." {")
-        sub_print_r(t,"  ")
-        print("}")
-    else
-        sub_print_r(t,"  ")
-    end
-    print()
-end
- 
-
 -- zwm
 
 -- configuration file
@@ -77,18 +40,24 @@ end
 
 load_config(config_file_path)
 
-if config["autoReload"] then
-    local config_watcher = hs.pathwatcher.new(config_file_dir, reload_config):start()
-end
-
--- key bindings
-if config["meta"] ~= "" then
-    local num = 0
-    mod = {}
-    for word in string.gmatch(config["meta"], '([^-]+)') do
-        mod[num] = word
-        num = num + 1
+if config then
+    if config["autoReload"] then
+        local config_watcher = hs.pathwatcher.new(config_file_dir, reload_config):start()
     end
+
+    local mod = config["key_bindings"]["mod"]
+
+    -- key bindings
+    if config["terminal"] then
+        local key = config["terminal"]["key"]
+        local app = config["terminal"]["app"]
+       
+        hs.hotkey.bind(mod, key, function()
+            hs.application.open(app)
+        end)
+    end
+else
+    hs.alert.show("Config not loaded properly")
 end
 
 -- hammerspoon
