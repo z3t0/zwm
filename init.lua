@@ -47,15 +47,17 @@ function config_load()
                                 local win = hs.window.focusedWindow()
                                 local f = win:frame()
                                 local gap = config["window_management"]["gap"]
-                                screen_frame = hs.screen.mainScreen():frame()
+                                local screen_frame = hs.screen.mainScreen():frame()
+                                local action = info["action"]
 
-
-                                if info["action"] == "window_tiling_toggle" then
+                                if action == "window_tiling_toggle" then
                                     alert("Tiling: monocle")
+                                    window_monocle(f, win, screen_frame, gap)
 
-                                    new_frame = hs.geometry.rect(screen_frame._x + gap, screen_frame._y + gap, screen_frame._w - (2 * gap), screen_frame._h - (2 * gap))
-                                    win:setFrame(new_frame)                               
-                                    -- win:centerOnScreen()
+                                elseif action == "window_previous" then
+                                    application_next(false)
+                                elseif action == "window_next" then    
+                                    application_next(true)        
                                 end
 
                             end
