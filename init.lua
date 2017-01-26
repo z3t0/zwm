@@ -49,11 +49,11 @@ function config_load()
                                     -- TODO: Add other modes for this
                                     if config["window_management"]["mode"] == "monocle" then
                                         config["window_management"]["mode"] = "none"
-                                        alert("tiling enabled")
-                                    elseif config["window_management"]["mode"] == "none" then
-                                        window_tile()
-                                        config["window_management"]["mode"] = "monocle"
                                         alert("tiling disabled")
+                                    elseif config["window_management"]["mode"] == "none" then
+                                        config["window_management"]["mode"] = "monocle"
+                                        window_tile()
+                                        alert("tiling enabled")
                                     end
 
                                 elseif action == "window_previous" then
