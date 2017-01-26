@@ -44,7 +44,6 @@ function parse_keybinding(b)
     end
 
     if key ~= nil then
-        print("key found: " .. key)
         -- todo error checking for acceptable keys
         parsed.key = key
     end
@@ -103,7 +102,11 @@ function config_load()
                                 elseif action == "application_previous" then
                                     application_next(false)
                                 elseif action == "application_next" then    
-                                    application_next(true)        
+                                    application_next(true)     
+                                elseif action == "window_previous" then
+                                    window_next(false)
+                                elseif action == "window_next" then    
+                                    window_next(true)       
                                 end
 
                             end

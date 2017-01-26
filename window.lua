@@ -99,3 +99,50 @@ function application_next(front)
     next:activate()
     window_tile()
 end
+
+function window_next(front)
+    current_app = hs.application.frontmostApplication()
+    local win = current_app:focusedWindow()
+    local current_windows = current_app:allWindows()
+    local new_win = nil
+    local desktop = hs.window.desktop()
+
+    if current_app:name() == "Finder" then
+        -- remove desktop from list of windows
+        for i in ipairs(current_windows) do
+            if current_windows[i] == desktop then
+                current_windows[i] = nil
+                print("removed")
+            end
+        end
+    end
+
+    local count = table_count(current_windows)
+
+    for i in ipairs(current_windows) do
+        if win == current_windows[i] then
+            if i == count then
+                if front then
+                    new_win = current_windows[1]
+                else 
+                    new_win = current_windows[i - 1]
+                end
+            elseif i == 1 then
+                if front then
+                    new_win = current_windows[i + 1]
+                else
+                    new_win = current_windows[count]
+                end
+            else 
+                if front then
+                    new_win = current_windows[i + 1]
+                else
+                    new_win = current_windows[i - 1]
+                end
+            end
+        end
+    end
+
+    new_win:focus()
+    window_tile()
+end
