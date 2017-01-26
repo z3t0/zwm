@@ -77,7 +77,7 @@ function config_load()
                 elseif type == "space" then
                 
                 -- Controlling the window manager
-                elseif type == "window" then 
+                elseif type == "window_management" then 
                     if (key ~= "" and action ~= "") then 
 
                         -- tiling
@@ -100,9 +100,9 @@ function config_load()
                                         alert("tiling enabled")
                                     end
 
-                                elseif action == "window_previous" then
+                                elseif action == "application_previous" then
                                     application_next(false)
-                                elseif action == "window_next" then    
+                                elseif action == "application_next" then    
                                     application_next(true)        
                                 end
 
