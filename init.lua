@@ -80,7 +80,6 @@ function config_load()
                                 elseif info["action"] == "window_right" then
                                     f.x = f.x + move_amount
                                 elseif info["action"] == "window_up" then
-                                -- BUG: Up is down down is up https://github.com/Hammerspoon/hammerspoon/issues/1208
                                     f.y = f.y - move_amount
                                 elseif info["action"] == "window_down" then
                                     f.y = f.y + move_amount
