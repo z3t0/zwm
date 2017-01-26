@@ -8,6 +8,7 @@ Licensed under the MIT License
 
 require("utilities")
 require("window")
+require("server")
 
 -- zwm
 applications = get_applications()
@@ -32,7 +33,7 @@ function config_load()
                         end)
                     end
                 
-                -- Controlling the window manager
+            -- Controlling the window manager
                 elseif info["type"] == "window" then 
                     if (info["key"] ~= "" and info["action"] ~= "") then 
 
@@ -119,7 +120,6 @@ function load_config(file)
     if config_source == "" then
         alert("empty config")
     else 
-        hs.printf("zwm config: \n" .. config_source)
         config = hs.json.decode(config_source)
         config_load()
         alert("loaded config")
