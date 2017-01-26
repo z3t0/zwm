@@ -45,7 +45,7 @@ function error(msg)
 end
 
 function alert_simple(msg) 
-    hs.alert.new(msg)
+    hs.alert(msg)
 end
 
 function alert(msg, title) 
@@ -53,7 +53,11 @@ function alert(msg, title)
       title = "zwm"
     end
 
-    hs.notify.new({title="zwm", informativeText=msg}):send()
+    if config["silent"] then
+        print(msg)
+    else
+        hs.notify.new({title="zwm", informativeText=msg}):send()
+    end
 end
 
 function string_match(str, table)
