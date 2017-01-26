@@ -17,20 +17,27 @@ function parse_keybinding(b)
     -- converts "-" separate binding into usable binding
     local mods_config = config["mods"]
     
-    print_r(mods_config)
+    local mod_found = false
 
     -- replace modifiers with corresponding keys
     for k, v in pairs(mods_config) do
         if b:match(k) then
-            print("match: " .. k)
             b = b:gsub(k, v)
+            mod_found = true
         end
     end
 
     local key = b:sub(b:len(), b:len())
 
     local parsed = {}
-    parsed.mods = b:sub(1, b:len() - 2)
+    
+    -- if neither modifier is there assume mod1
+    if mod_found then
+        parsed.mods = b:sub(1, b:len() - 2)
+    else
+        parsed.mods = mods_config["mod1"]
+    end    
+
     parsed.key = key
 
     return parsed
@@ -41,95 +48,96 @@ function config_load()
         hs.printf("Config loaded")
 
         -- key bindings
-        -- if config["key_bindings"] then
-        --     return
-        --     for binding, info in pairs(config["key_bindings"]) do
+        if config["key_bindings"] then
+            for b, info in pairs(config["key_bindings"]) do
                 
-        --         local type = info["type"]
-        --         local key = info["key"]
-        --         local action = info["action"]
+                local type = info["type"]
+                local key = info["key"]
+                local action = info["action"]
+                local binding = parse_keybinding(info["key"])
 
-        --         -- Launching Applications
-        --         if type == "application" then
-        --             if (key ~= "" and action ~= "") then 
-        --                 hs.hotkey.bind(mod1, key, nil, function() 
-        --                     hs.application.open(action)
-        --                 end)
-        --             end
+                -- Launching Applications
+                if type == "application" then
+                    if (key ~= "" and action ~= "") then 
+                        hs.hotkey.bind(binding.mods, binding.key, nil, function() 
+                            print_r(binding)
+                            hs.application.open(action)
+                        end)
+                    end
 
-        --         elseif type == "space" then
+                elseif type == "space" then
                 
-        --         -- Controlling the window manager
-        --         elseif type == "window" then 
-        --             if (key ~= "" and action ~= "") then 
+                -- Controlling the window manager
+                elseif type == "window" then 
+                    if (key ~= "" and action ~= "") then 
 
-        --                 -- tiling
-        --                 local tiling = {"previous", "next", "toggle"}
+                        -- tiling
+                        local tiling = {"previous", "next", "toggle"}
 
-        --                 if (string_match(action, tiling)) then
+                        if (string_match(action, tiling)) then
 
-        --                     local function bind() 
+                            local function bind() 
                                
-        --                         local action = action
+                                local action = action
 
-        --                         if action == "window_tiling_toggle" then
-        --                             -- TODO: Add other modes for this
-        --                             if config["window_management"]["mode"] == "monocle" then
-        --                                 config["window_management"]["mode"] = "none"
-        --                                 alert("tiling disabled")
-        --                             elseif config["window_management"]["mode"] == "none" then
-        --                                 config["window_management"]["mode"] = "monocle"
-        --                                 window_tile()
-        --                                 alert("tiling enabled")
-        --                             end
+                                if action == "window_tiling_toggle" then
+                                    -- TODO: Add other modes for this
+                                    if config["window_management"]["mode"] == "monocle" then
+                                        config["window_management"]["mode"] = "none"
+                                        alert("tiling disabled")
+                                    elseif config["window_management"]["mode"] == "none" then
+                                        config["window_management"]["mode"] = "monocle"
+                                        window_tile()
+                                        alert("tiling enabled")
+                                    end
 
-        --                         elseif action == "window_previous" then
-        --                             application_next(false)
-        --                         elseif action == "window_next" then    
-        --                             application_next(true)        
-        --                         end
+                                elseif action == "window_previous" then
+                                    application_next(false)
+                                elseif action == "window_next" then    
+                                    application_next(true)        
+                                end
 
-        --                     end
+                            end
 
-        --                     hs.hotkey.bind(mod1, key, bind, nil, bind)
+                            hs.hotkey.bind(binding.mods, binding.key, bind, nil, bind)
 
-        --                 end
+                        end
     
-        --                 -- movement
-        --                 local movement = {"left", "right", "down", "up"}
+                        -- movement
+                        local movement = {"left", "right", "down", "up"}
                       
-        --                 if (string_match(action, movement)) then
-        --                     local function bind()
-        --                         local win = hs.window.focusedWindow()
-        --                         local f = win:frame()
-        --                         local move_amount = config["window_management"]["move_amount"]
+                        if (string_match(action, movement)) then
+                            local function bind()
+                                local win = hs.window.focusedWindow()
+                                local f = win:frame()
+                                local move_amount = config["window_management"]["move_amount"]
                                 
-        --                         if action == "window_left" then
-        --                             f.x = f.x - move_amount
-        --                         elseif action == "window_right" then
-        --                             f.x = f.x + move_amount
-        --                         elseif action == "window_up" then
-        --                             f.y = f.y - move_amount
-        --                         elseif action == "window_down" then
-        --                             f.y = f.y + move_amount
-        --                         else
-        --                             error("invalid window movement binding: " .. action)
-        --                         end
+                                if action == "window_left" then
+                                    f.x = f.x - move_amount
+                                elseif action == "window_right" then
+                                    f.x = f.x + move_amount
+                                elseif action == "window_up" then
+                                    f.y = f.y - move_amount
+                                elseif action == "window_down" then
+                                    f.y = f.y + move_amount
+                                else
+                                    error("invalid window movement binding: " .. action)
+                                end
 
-        --                         win:setFrame(f)
-        --                     end
+                                win:setFrame(f)
+                            end
                             
-        --                     hs.hotkey.bind(mod1, info["key"], bind, nil, bind)
-        --                 end
-        --             end
+                            hs.hotkey.bind(binding.mods, binding.key, bind, nil, bind)
+                        end
+                    end
 
-        --         else
-        --             print("error: " .. type .. " not implemented")
+                else
+                    print("error: " .. type .. " not implemented")
 
-        --         end
+                end
                 
-        --     end
-        -- end
+            end
+        end
     else
         alert("Config not loaded properly")
     end
