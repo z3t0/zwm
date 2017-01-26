@@ -27,8 +27,6 @@ function parse_keybinding(b)
         end
     end
 
-    local key = b:sub(b:len(), b:len())
-
     local parsed = {}
     
     -- if neither modifier is there assume mod1
@@ -37,8 +35,19 @@ function parse_keybinding(b)
     else
         parsed.mods = mods_config["mod1"]
     end    
+    
+    local key = nil
 
-    parsed.key = key
+    -- get key
+    for i in string.gmatch(b, '([^-]+)') do
+        key = i
+    end
+
+    if key ~= nil then
+        print("key found: " .. key)
+        -- todo error checking for acceptable keys
+        parsed.key = key
+    end
 
     return parsed
 end
