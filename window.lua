@@ -1,4 +1,12 @@
 require ("utilities")
+spaces = require("hs._asm.undocumented.spaces")
+
+function get_spaces()
+    local spaces = hs.screen.mainScreen():spaces()
+
+    return spaces
+end
+
 function get_applications() 
     local applications = hs.application.runningApplications()
     local not_applications = {}

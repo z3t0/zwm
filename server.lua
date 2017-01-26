@@ -3,7 +3,6 @@ local function received(msg)
     if msg == "connect" then
         return "success"
     end
-   
 end
 
 local function callback(req, path, hed, raw)
