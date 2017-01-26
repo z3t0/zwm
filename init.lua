@@ -10,16 +10,14 @@ require("utilities")
 require("window")
 
 -- zwm
-
-tiling_modes = {"monocle"}
-
 applications = get_applications()
 
 function config_load()
     if config then
         hs.printf("Config loaded")
 
-        local mod = config["mod"]
+        local mod1 = config["mod1"]
+        local mod2 = config["mod2"]
 
         -- key bindings
         if config["key_bindings"] then
@@ -29,7 +27,7 @@ function config_load()
                 -- Launching Applications
                 if info["type"] == "application" then
                     if (info["key"] ~= "" and info["action"] ~= "") then 
-                        hs.hotkey.bind(mod, info["key"], nil, function() 
+                        hs.hotkey.bind(mod1, info["key"], nil, function() 
                             hs.application.open(info["action"])
                         end)
                     end
@@ -44,15 +42,19 @@ function config_load()
                         if (string_match(info["action"], tiling)) then
 
                             local function bind() 
-                                local win = hs.window.focusedWindow()
-                                local f = win:frame()
-                                local gap = config["window_management"]["gap"]
-                                local screen_frame = hs.screen.mainScreen():frame()
+                               
                                 local action = info["action"]
 
                                 if action == "window_tiling_toggle" then
-                                    alert("Tiling: monocle")
-                                    window_monocle(f, win, screen_frame, gap)
+                                    -- TODO: Add other modes for this
+                                    if config["window_management"]["mode"] == "monocle" then
+                                        config["window_management"]["mode"] = "none"
+                                        alert("tiling enabled")
+                                    elseif config["window_management"]["mode"] == "none" then
+                                        window_tile()
+                                        config["window_management"]["mode"] = "monocle"
+                                        alert("tiling disabled")
+                                    end
 
                                 elseif action == "window_previous" then
                                     application_next(false)
@@ -62,7 +64,7 @@ function config_load()
 
                             end
 
-                            hs.hotkey.bind(mod, info["key"], bind, nil, bind)
+                            hs.hotkey.bind(mod1, info["key"], bind, nil, bind)
 
                         end
 
@@ -90,7 +92,7 @@ function config_load()
                                 win:setFrame(f)
                             end
                             
-                            hs.hotkey.bind(mod, info["key"], bind, nil, bind)
+                            hs.hotkey.bind(mod1, info["key"], bind, nil, bind)
                         end
                     end
 

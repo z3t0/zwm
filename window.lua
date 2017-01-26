@@ -35,15 +35,20 @@ function get_applications()
     return ordered
 end
 
-function window_monocle(frame, win, screen, gap)
-    if gap == nil then
-        gap = 0
+function window_tile()
+    local tile = config["window_management"]["mode"]
+
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local gap = config["window_management"]["gap"]
+    local screen = hs.screen.mainScreen():frame()
+
+    if tile == "monocle" then
+        local new_frame = hs.geometry.rect(screen._x + gap, screen._y + gap, screen._w - (2 * gap), screen._h - (2 * gap))
+        if new_frame ~= f then
+            win:setFrame(new_frame)
+        end
     end
-
-    print("monocle")
-
-    new_frame = hs.geometry.rect(screen._x + gap, screen._y + gap, screen._w - (2 * gap), screen._h - (2 * gap))
-    win:setFrame(new_frame)       
 end
 
 function application_next(front)
@@ -84,4 +89,5 @@ function application_next(front)
     end
 
     next:activate()
+    window_tile()
 end
