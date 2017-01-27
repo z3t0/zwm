@@ -19,6 +19,7 @@ function get_spaces()
     if inner ~= nil then
        return inner
     end
+
 end
 
 function change_to_space(space)
@@ -31,6 +32,8 @@ function change_to_space(space)
     else
         error("space does not exist: " .. tostring(space))
     end
+
+		send_spaces()
 end
 
 function func_change_to_space(index)
