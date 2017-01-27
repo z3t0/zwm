@@ -54,7 +54,7 @@ function window_tile()
     if tile == "monocle" then
         local new_frame = hs.geometry.rect(screen._x + gap, screen._y + gap, screen._w - (2 * gap), screen._h - (2 * gap))
         if new_frame ~= f then
-            win:setFrame(new_frame)
+            win:setFrame(new_frame, 0)
         end
     end
 end
