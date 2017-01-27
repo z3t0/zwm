@@ -9,6 +9,7 @@ Licensed under the MIT License
 require("utilities")
 require("window")
 require("server")
+require("spaces")
 
 -- zwm
 applications = get_applications()
@@ -57,8 +58,10 @@ function config_load()
 
         -- key bindings
         if config["key_bindings"] then
+
+            -- dynamic bindings
             for b, info in pairs(config["key_bindings"]) do
-                
+
                 local type = info["type"]
                 local key = info["key"]
                 local action = info["action"]
@@ -85,7 +88,19 @@ function config_load()
                     end
 
                 elseif type == "space" then
-                
+                    if action == "space_change" then
+                        local bind = nil
+                        -- number keys
+                        for i=1, 9 do
+                            bind_test = func_change_to_space(i)
+                            if bind_test ~= nil then
+                                hs.hotkey.bind(binding.key, tostring(i), nil, bind_test)
+                            else
+                                print("nil at " .. i)
+                            end
+                        end
+                    end
+        
                 -- Controlling the window manager
                 elseif type == "window_management" then 
                     if (key ~= "" and action ~= "") then 

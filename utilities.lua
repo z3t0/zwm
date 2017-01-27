@@ -70,3 +70,12 @@ function string_match(str, table)
     end
     return false
 end
+
+
+function a(i) 
+    return i + 1
+end
+
+function b(i)
+    return a(i)
+end
