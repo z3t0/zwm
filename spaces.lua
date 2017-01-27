@@ -23,13 +23,13 @@ end
 
 function change_to_space(space)
     -- already on space
-    if space == spaces.activeSpace() then
-        return
-    end
+
 
     local new_space = get_spaces()[space]
-    print("changed")
-    if new_space ~= nil then
+   
+    if new_space == spaces.activeSpace() then
+        return
+    elseif new_space ~= nil then
         spaces.changeToSpace(new_space, false)
     else
         error("space does not exist: " .. tostring(space))
@@ -37,8 +37,6 @@ function change_to_space(space)
 end
 
 function func_change_to_space(index)
-
-    print("index" .. index)
     return function()
         return change_to_space(index)
     end
