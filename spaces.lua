@@ -22,9 +22,6 @@ function get_spaces()
 end
 
 function change_to_space(space)
-    -- already on space
-
-
     local new_space = get_spaces()[space]
    
     if new_space == spaces.activeSpace() then

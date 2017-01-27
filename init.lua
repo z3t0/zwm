@@ -83,7 +83,7 @@ function config_load()
                         end
 
                         if bind ~= nil then
-                            hs.hotkey.bind(binding.mods, binding.key, nil, bind) 
+                            hs.hotkey.bind(binding.mods, binding.key, bind, nil, nil) 
                         end
                     end
 
