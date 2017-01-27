@@ -67,10 +67,21 @@ function config_load()
                 -- Launching Applications
                 if type == "application" then
                     if (key ~= "" and action ~= "") then 
-                        hs.hotkey.bind(binding.mods, binding.key, nil, function() 
-                            print_r(binding)
-                            hs.application.open(action)
-                        end)
+                        -- open .app
+                        local bind = nil
+                        if action:sub(action:len() - 3, action:len()) == ".app" then
+                            bind = function() 
+                                hs.application.open(action)
+                            end
+                        elseif action == "application_quit" then
+                            bind = function()
+                                hs.application.frontmostApplication():kill()
+                            end
+                        end
+
+                        if bind ~= nil then
+                            hs.hotkey.bind(binding.mods, binding.key, nil, bind) 
+                        end
                     end
 
                 elseif type == "space" then
