@@ -6,6 +6,7 @@ function table_count(t)
     return count
 end
 
+-- recursively prints table
 function print_r ( t )  
     local print_r_cache={}
     local function sub_print_r(t,indent)
@@ -60,6 +61,7 @@ function alert(msg, title)
     end
 end
 
+-- if string matches optiosn from table
 function string_match(str, table)
     for k, v in pairs(table) do
         if string.match(str, v) then
