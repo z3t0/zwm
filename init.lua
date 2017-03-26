@@ -8,12 +8,18 @@ Licensed under the MIT License
 
 require("utilities")
 require("window")
-require("server")
 require("spaces")
+require("menubar")
 
 -- zwm
 applications = get_applications()
 
+
+-- configuration file
+-- TODO: exact file path
+config_file_dir = os.getenv("HOME").. "/.zwm"
+
+-- parses key bindings into individual keys with modifier(s)
 function parse_keybinding(b)
 	-- converts "-" separate binding into usable binding
 	local mods_config = config["mods"]
@@ -52,6 +58,7 @@ function parse_keybinding(b)
 	return parsed
 end
 
+-- loads the configuration
 function config_load()
 	if config then
 		hs.printf("Config loaded")
@@ -176,16 +183,20 @@ function config_load()
 
 			end
 		end
+
+		-- spaces icon
+		if config["spaces"] then
+			workspaces = {}
+			for s, text in pairs(config["spaces"]) do
+				workspaces[s] = text
+			end
+		end
 	else
 		alert("Config not loaded properly")
 	end
 end
 
--- configuration file
-
-config_file_dir = os.getenv("HOME").. "/.zwm"
-
-
+ -- reads the config as a json file
 function load_config(file)
 	local config_source = hs.execute("cat " .. config_file_dir .. "/config.json")
 
@@ -199,6 +210,7 @@ function load_config(file)
 
 end
 
+-- reloads the config file on directory change
 function reload_config(files)
 	doReload = false
 	for _,file in pairs(files) do
@@ -211,13 +223,12 @@ function reload_config(files)
 	end
 end
 
-load_config(config_file_path)
+-- Initialisation
+load_config(config_file_path)	-- load configuaration
+local config_watcher = hs.pathwatcher.new(config_file_dir, reload_config):start() -- watch for file changes
+set_workspaces()
 
-local config_watcher = hs.pathwatcher.new(config_file_dir, reload_config):start()
-
-
--- hammerspoon
-
+-- hammerspoon config
 -- reload this file on change.
 function reload_hammerspoon(files)
 	doReload = false

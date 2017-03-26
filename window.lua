@@ -1,5 +1,6 @@
 require ("utilities")
 
+-- Returns a table of all the applications, minus corner cases
 function get_applications() 
 	local applications = hs.application.runningApplications()
 	local not_applications = {}
@@ -36,6 +37,7 @@ function get_applications()
 	return ordered
 end
 
+-- Tiles all windows according to the tiling setting
 function window_tile()
 	local tile = config["window_management"]["mode"]
 
@@ -44,6 +46,7 @@ function window_tile()
 	local gap = config["window_management"]["gap"]
 	local screen = hs.screen.mainScreen():frame()
 	local bar_offset = config["bar"]["height"]
+	bar_offset = 0
 
 	if tile == "monocle" then
 		local new_frame = hs.geometry.rect(screen._x + gap, screen._y + gap + bar_offset, screen._w - (2 * gap), screen._h - (2 * gap) - bar_offset)
@@ -53,6 +56,7 @@ function window_tile()
 	end
 end
 
+-- Switches to the next application and then tiles if necessary
 function application_next(front)
 	-- monocle
 	current_app = hs.application.frontmostApplication()
@@ -94,6 +98,8 @@ function application_next(front)
 	window_tile()
 end
 
+-- Switches to the next window for the frontMost application
+-- TODO: next window of any application, duplicate windows alt-tab
 function window_next(front)
 	current_app = hs.application.frontmostApplication()
 	local win = current_app:focusedWindow()

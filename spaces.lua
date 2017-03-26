@@ -33,7 +33,7 @@ function change_to_space(space)
         error("space does not exist: " .. tostring(space))
     end
 
-		send_spaces()
+	set_workspaces()
 end
 
 function func_change_to_space(index)

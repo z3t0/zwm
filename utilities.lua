@@ -1,5 +1,6 @@
 -- utilities
 
+-- return the number of items in a table
 function table_count(t)
     local count = 0
     for _ in pairs(t) do count = count + 1 end
@@ -41,14 +42,18 @@ function print_r ( t )
     print()
 end
 
+-- prints an error to the console
+-- TODO: proper error handling
 function error(msg)
     print("error: \n" .. msg)
 end
 
+-- Alert in center of the screen
 function alert_simple(msg) 
     hs.alert(msg)
 end
 
+-- Alert from notifications center
 function alert(msg, title) 
     if title == nil then
       title = "zwm"
@@ -61,7 +66,7 @@ function alert(msg, title)
     end
 end
 
--- if string matches optiosn from table
+-- if string matches options from table
 function string_match(str, table)
     for k, v in pairs(table) do
         if string.match(str, v) then
@@ -71,11 +76,44 @@ function string_match(str, table)
     return false
 end
 
+-- if item matches a key in the table, return that pair
+function match_item(item, table)
+    for k, v in pairs(table) do
+        if string.match(item, k) then
+            print("match")
+            return {i = k, f = v}
+        end
+    end
 
-function a(i) 
-    return i + 1
+    return nil
 end
 
-function b(i)
-    return a(i)
+-- hex to rgb
+function hex_to_rgb(hex)
+    local hex = hex:gsub("#","")
+    local rgb = {r =tonumber("0x"..hex:sub(1,2))/255, g = tonumber("0x"..hex:sub(3,4))/255, b = tonumber("0x"..hex:sub(5,6))/255}
+
+    return rgb
+end
+
+-- converts text to ansi color
+function ansi_color(c)
+    if c == "black" then
+        return 30
+    elseif c == "red" then
+        return 31
+    elseif c == "green" then
+        return 32
+    elseif c == "yellow" then
+        return 33
+    elseif c == "blue" then
+        return 34
+    elseif c == "purple" then 
+        return 35
+    elseif c == "cyan" then 
+        return 36
+    elseif c == "white" then
+        return 37
+    end
+
 end
