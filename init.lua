@@ -81,23 +81,23 @@ function config_load()
 						local bind = nil
 						if action:sub(action:len() - 3, action:len()) == ".app" then
 							bind = function() 
-								hs.application.open(action)
-							end
+							hs.application.open(action)
+						end
 						elseif action == "application_quit" then
 							bind = function()
-								hs.application.frontmostApplication():kill()
-							end
-						end
-
-						if bind ~= nil then
-							hs.hotkey.bind(binding.mods, binding.key, bind, nil, nil) 
+							hs.application.frontmostApplication():kill()
 						end
 					end
+
+					if bind ~= nil then
+						hs.hotkey.bind(binding.mods, binding.key, bind, nil, nil) 
+					end
+				end
 
 				elseif type == "space" then
 					if action == "space_change" then
 						local bind = nil
-						-- number keys
+						-- switch to number keys
 						for i=1, 9 do
 							bind_test = func_change_to_space(i)
 							if bind_test ~= nil then
@@ -106,11 +106,25 @@ function config_load()
 								print("nil at " .. i)
 							end
 						end
+
+					elseif action == "space_move" then
+						-- move window to number keys
+						for i=1, 9 do
+							bd = info["key"] .. '-' .. tostring(i)
+							binding = parse_keybinding(info["key"] .. '-' .. tostring(i))
+							be = binding
+							bind_test = func_move_to_space(i)
+							if bind_test ~= nil then
+								hs.hotkey.bind(binding.mods, binding.key, nil, bind_test)
+							else
+								print("nil at " .. i)
+							end
+						end
 					end
 
 					-- Controlling the window manager
-				elseif type == "window_management" then 
-					if (key ~= "" and action ~= "") then 
+					elseif type == "window_management" then 
+						if (key ~= "" and action ~= "") then 
 
 						-- tiling
 						local tiling = {"previous", "next", "toggle"}
@@ -126,27 +140,27 @@ function config_load()
 									if config["window_management"]["mode"] == "monocle" then
 										config["window_management"]["mode"] = "none"
 										alert("tiling disabled")
-									elseif config["window_management"]["mode"] == "none" then
-										config["window_management"]["mode"] = "monocle"
-										window_tile()
-										alert("tiling enabled")
-									end
+										elseif config["window_management"]["mode"] == "none" then
+											config["window_management"]["mode"] = "monocle"
+											window_tile()
+											alert("tiling enabled")
+										end
 
-								elseif action == "application_previous" then
-									application_next(false)
-								elseif action == "application_next" then    
-									application_next(true)     
-								elseif action == "window_previous" then
-									window_next(false)
-								elseif action == "window_next" then    
-									window_next(true)       
-								end
+										elseif action == "application_previous" then
+											application_next(false)
+											elseif action == "application_next" then    
+												application_next(true)     
+												elseif action == "window_previous" then
+													window_next(false)
+													elseif action == "window_next" then    
+														window_next(true)       
+													end
 
-							end
+												end
 
-							hs.hotkey.bind(binding.mods, binding.key, bind, nil, bind)
+												hs.hotkey.bind(binding.mods, binding.key, bind, nil, bind)
 
-						end
+											end
 
 						-- movement
 						local movement = {"left", "right", "down", "up"}
@@ -159,30 +173,30 @@ function config_load()
 
 								if action == "window_left" then
 									f.x = f.x - move_amount
-								elseif action == "window_right" then
-									f.x = f.x + move_amount
-								elseif action == "window_up" then
-									f.y = f.y - move_amount
-								elseif action == "window_down" then
-									f.y = f.y + move_amount
-								else
-									error("invalid window movement binding: " .. action)
+									elseif action == "window_right" then
+										f.x = f.x + move_amount
+										elseif action == "window_up" then
+											f.y = f.y - move_amount
+											elseif action == "window_down" then
+												f.y = f.y + move_amount
+											else
+												error("invalid window movement binding: " .. action)
+											end
+
+											win:setFrame(f)
+										end
+
+										hs.hotkey.bind(binding.mods, binding.key, bind, nil, bind)
+									end
 								end
 
-								win:setFrame(f)
+							else
+								print("error: " .. type .. " not implemented")
+
 							end
 
-							hs.hotkey.bind(binding.mods, binding.key, bind, nil, bind)
 						end
 					end
-
-				else
-					print("error: " .. type .. " not implemented")
-
-				end
-
-			end
-		end
 
 		-- spaces icon
 		if config["spaces"] then
@@ -197,18 +211,18 @@ function config_load()
 end
 
  -- reads the config as a json file
-function load_config(file)
-	local config_source = hs.execute("cat " .. config_file_dir .. "/config.json")
+ function load_config(file)
+ 	local config_source = hs.execute("cat " .. config_file_dir .. "/config.json")
 
-	if config_source == "" then
-		alert("empty config")
-	else 
-		config = hs.json.decode(config_source)
-		config_load()
-		alert("loaded config")
-	end
+ 	if config_source == "" then
+ 		alert("empty config")
+ 	else 
+ 		config = hs.json.decode(config_source)
+ 		config_load()
+ 		alert("loaded config")
+ 	end
 
-end
+ end
 
 -- reloads the config file on directory change
 function reload_config(files)

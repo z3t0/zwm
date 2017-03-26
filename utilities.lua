@@ -80,7 +80,6 @@ end
 function match_item(item, table)
     for k, v in pairs(table) do
         if string.match(item, k) then
-            print("match")
             return {i = k, f = v}
         end
     end

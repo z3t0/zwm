@@ -41,3 +41,22 @@ function func_change_to_space(index)
         return change_to_space(index)
     end
 end
+
+function move_to_space(space)
+    local win = hs.window.focusedWindow()
+    local new_space = get_spaces()[space]
+   
+    if new_space == spaces.activeSpace() then
+        return
+    elseif new_space ~= nil then
+        win:spacesMoveTo(new_space)
+    else
+        error("space does not exist: " .. tostring(space))
+    end
+end
+
+function func_move_to_space(index)
+    return function()
+        return move_to_space(index)
+    end
+end
