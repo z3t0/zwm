@@ -45,4 +45,6 @@ function replace_identifier(index)
 	end
 end
 
-
+-- change menubar on normal space change
+local watcher = hs.spaces.watcher.new(set_workspaces)
+watcher:start()
