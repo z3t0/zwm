@@ -110,10 +110,8 @@ function config_load()
 					elseif action == "space_move" then
 						-- move window to number keys
 						for i=1, 9 do
-							bd = info["key"] .. '-' .. tostring(i)
-							binding = parse_keybinding(info["key"] .. '-' .. tostring(i))
-							be = binding
-							bind_test = func_move_to_space(i)
+							local binding = parse_keybinding(info["key"] .. '-' .. tostring(i))
+							local bind_test = func_move_to_space(i)
 							if bind_test ~= nil then
 								hs.hotkey.bind(binding.mods, binding.key, nil, bind_test)
 							else
