@@ -7,13 +7,12 @@ menubar = hs.menubar.new()
 function set_workspaces()
 	local all_spaces = get_spaces()
 	local current = spaces.activeSpace()
-	output = ""
+	local inactive_before_text = ""
+	local inactive_after_text = ""
 	local separator = ""
+	local active_text = ""
 	local color_active = hex_to_rgb(config["bar"].color_active)
 	local color_inactive = hex_to_rgb(config["bar"].color_inactive)
-
-	start = nil
-	ending = nil
 
 	if config["bar"].separator then
 		separator = config["bar"].separator
@@ -24,59 +23,28 @@ function set_workspaces()
 	for i in ipairs(all_spaces) do
 		t = replace_identifier(tostring(i))
 		if all_spaces[i] == current then
-			start = output:len()
-			output = output .. t .. separator
-			ending = output:len()
+			active_text = t .. separator
 			
 		else
-			output = output .. t .. separator
+			if active_text:len() == 0 then
+				inactive_before_text = inactive_before_text .. t .. separator
+			else
+				inactive_after_text = inactive_after_text .. t .. separator
+			end
 		end
 	end
 
-	if start == 0 then
-		start = 1
-	end
-
 	-- fontawesome
-	local font = {font = {name = "FontAwesome", size = config["bar"].size}}
-	local active = {starts = start,
-		ends = ending2,
-		attributes = { 
-		color = { 
-			red = color_active.r, 
-			green = color_active.g,
-			blue = color_active.b
-			},
-			font = {name = "FontAwesome", size = config["bar"].size}
-		}
-	}
+	local font = {name = "FontAwesome", size = config["bar"].size}
 
-	local inactive_before = {starts = 1 ,
-		ends= start,
-		attributes = {
-		color = { 
-			red = color_inactive.r, 
-			green = color_inactive.g,
-			blue = color_inactive.b
-			},
-			font = {name = "FontAwesome", size = config["bar"].size}
-		}}
+	local active = hs.styledtext.new(active_text, {font = font, color = { red = color_active.r, green = color_active.g, blue = color_active.b}})
+	local inactive_before = hs.styledtext.new(inactive_before_text, {font = font, color = { red = color_inactive.r, green = color_inactive.g, blue = color_inactive.b}})
+	local inactive_after = hs.styledtext.new(inactive_after_text, {font = font, color = { red = color_inactive.r, green = color_inactive.g, blue = color_inactive.b}})
 
-		local inactive_after = {starts = ending,
-		ends= output:len() + 1,
-		attributes = {
-		color = { 
-			red = color_inactive.r, 
-			green = color_inactive.g,
-			blue = color_inactive.b
-			},
-			font = {name = "FontAwesome", size = config["bar"].size}
-		}}
+	local g_str = inactive_before .. active .. inactive_after
 
-
-	-- local str  F hs.styledtext.ansi(, {font={name="Monaco",size=10},backgroundColor={alpha=1}} )
-	local str = hs.styledtext.new({output, inactive_before, active, inactive_after})
-	menubar:setTitle(str)
+	hs.console.printStyledtext(g_str)
+	menubar:setTitle(g_str)
 end
 
 function replace_identifier(index)
