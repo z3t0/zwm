@@ -4,6 +4,7 @@ macOS window manager running on Hammerspoon
 This project aims to work with macOS rather than fight it.
 
 Screenshot of the spaces bar.
+
 ![Screenshot](https://i.imgur.com/T1P2NkQ.png)
 
 ### Instructions
