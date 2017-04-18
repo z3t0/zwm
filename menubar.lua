@@ -43,7 +43,6 @@ function set_workspaces()
 
 	local g_str = inactive_before .. active .. inactive_after
 
-	hs.console.printStyledtext(g_str)
 	menubar:setTitle(g_str)
 end
 

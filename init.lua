@@ -6,14 +6,19 @@ Licensed under the MIT License
 
 --]]
 
+-- global object
+-- TODO: Enforce this
+zwm = {}
+
+
 require("utilities")
 require("window")
 require("spaces")
 require("menubar")
+require("application")
 
 -- zwm
 applications = get_applications()
-
 
 -- configuration file
 -- TODO: exact file path

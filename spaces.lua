@@ -55,6 +55,23 @@ function move_to_space(space)
     end
 end
 
+-- sends an application and all of its windows to a space
+function send_to_space(app, space)
+    ba = app
+    windows = app:allWindows()
+    print(hs.inspect(windows))
+    local new_space = get_spaces()[space]
+   
+    if new_space == spaces.activeSpace() then
+        return
+
+    elseif new_space ~= nil then
+        for k, v in pairs(windows) do 
+             v:spacesMoveTo(new_space)
+        end
+    end
+end
+
 function func_move_to_space(index)
     return function()
         return move_to_space(index)

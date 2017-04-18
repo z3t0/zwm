@@ -1,1 +1,103 @@
-../.zwm/config.json
+{
+	"autoReload" : true,
+	"mods": {
+		"mod1": "alt",
+		"mod2": "shift"
+	},
+	"silent" : false,
+	"spaces": {
+		"1": "",
+		"2": ""
+	},
+	"applications": {
+		"SourceTree" : 3
+	},
+	"key_bindings": {
+		"terminal" : {
+			"key": "return",
+			"type": "application",
+			"action": "/Applications/iTerm.app" 
+		},
+		"window_left" : {
+			"key" : "h",
+			"type" : "window_management",
+			"action": "window_left"
+		},
+		"window_right" : {
+			"key" : "l",
+			"type" : "window_management",
+			"action": "window_right"
+		},
+		"window_up" : {
+			"key" : "k",
+			"type" : "window_management",
+			"action": "window_up"
+		},
+		"window_down" : {
+			"key" : "j",
+			"type" : "window_management",
+			"action": "window_down"
+		},
+		"application_next" : {
+			"key" : "]",
+			"type" : "window_management",
+			"action": "application_next"
+		},
+		"application_previous" : {
+			"key" : "[",
+				"type" : "window_management",
+				"action": "application_previous"
+		},
+		"window_next" : {
+			"key" : "mod1-mod2-]",
+			"type" : "window_management",
+			"action": "window_next"
+		},
+		"window_previous" : {
+			"key" : "mod1-mod2-[",
+				"type" : "window_management",
+				"action": "window_previous"
+		},
+		"window_tiling_mode" : {
+			"key" : "t",
+			"type": "window_management",
+			"action": "window_tiling_toggle"
+		},
+		"space_next" : {
+			"key" : "mod1-mod2-]",
+			"type": "space",
+			"action": "space_next"
+		},
+		"space_previous" : {
+			"key" : "mod1-mod2-[",
+				"type": "space",
+				"action": "space_previous"
+		},
+		"application_quit" : {
+			"key": "q",
+			"type": "application",
+			"action":"application_quit"
+		},
+		"space_change" : {
+			"key": "mod1",
+			"type": "space",
+			"action": "space_change"
+		},
+		"space_move" : {
+			"key": "mod1-mod2",
+			"type": "space",
+			"action": "space_move"
+		}
+	},
+	"window_management" : {
+		"mode" : "monocle",
+		"gap" : "10",
+		"move_amount" : 30
+	},
+	"bar": {
+		"size": 15,
+		"color_active" : "#FFAA00",
+		"color_inactive" : "#ffffff",
+		"separator" : " | "
+	}
+}
