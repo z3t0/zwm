@@ -9,15 +9,10 @@ Screenshot of the spaces bar.
 
 ### Instructions
 1. Install Hammerspoon
-2. Clone this repo
-```sh
-mkdir ~/.hammerspoon
-git clone https://github.com/z3t0/zwm ~/.hammerspoon
-
-mkdir ~/.zwm
-cp ~/.hammerspoon/examples/config.json ~/.zwm/config.json
-```
-3. Start Hammerspoon
+2. Download latest release
+3. Open zwm.spoon
+4. Install [asm.spaces](https://github.com/asmagill/hs._asm.undocumented.spaces/tree/eedc00c6796e4734e6dc161a614cb34a64f4abec) from the instructions on the page
+5. Start hammerspoon
 
 ### Features
 **Spaces**
