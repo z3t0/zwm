@@ -33,13 +33,19 @@ local function parse(config)
 
       end
       
+      -- Spaces
+      
 
       -- reloads on config file change
       if c.autoReload ~= nil and c.autoReload == true then
 	 local config_watcher = hs.pathwatcher.new(config_file_path, load_config):start()
       end
 
+      -- TODO: error checking
+      zwm.config = config
+
    end
+
 
 end
 
