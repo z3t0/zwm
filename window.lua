@@ -1,4 +1,4 @@
-require ("utilities")
+dofile (zwm.spoonPath.."utilities.lua")
 
 -- Returns a table of all the applications, minus corner cases
 function get_applications() 

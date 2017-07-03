@@ -1,6 +1,6 @@
 -- applications
 -- deals with assigning applications to the correct space
-require("utilities")
+dofile(zwm.spoonPath.."utilities.lua")
 
 local function application_deactivated(app, name)
 	-- TODO: Application has been deactivated

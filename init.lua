@@ -10,12 +10,21 @@ Licensed under the MIT License
 -- TODO: Enforce this
 zwm = {}
 
+-- Internal function used to find our location, so we know where to load files from
+local function script_path()
+    local str = debug.getinfo(2, "S").source:sub(2)
+    return str:match("(.*/)")
+end
 
-require("utilities")
-require("window")
-require("spaces")
-require("menubar")
-require("application")
+zwm.spoonPath = script_path()
+
+print(zwm.spoonPath)
+
+dofile(zwm.spoonPath.."utilities.lua")
+dofile(zwm.spoonPath.."window.lua")
+dofile(zwm.spoonPath.."spaces.lua")
+dofile(zwm.spoonPath.."menubar.lua")
+dofile(zwm.spoonPath.."application.lua")
 
 -- zwm
 applications = get_applications()
@@ -259,3 +268,5 @@ function reload_hammerspoon(files)
 	end
 end
 local myWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reload_hammerspoon):start()
+
+return {}

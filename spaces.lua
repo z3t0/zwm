@@ -1,7 +1,7 @@
 -- spaces
 
 spaces = require("hs._asm.undocumented.spaces")
-require("utilities")
+dofile(zwm.spoonPath.."utilities.lua")
 
 -- returns spaces in order, but its best to not move spaces around
 -- FIXME: This only addresses the primary screen (https://github.com/z3t0/zwm/issues/15)

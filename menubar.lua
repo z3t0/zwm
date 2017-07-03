@@ -1,6 +1,6 @@
 -- menubar
 
-require("utilities")
+dofile(zwm.spoonPath.."utilities.lua")
 
 menubar = hs.menubar.new()
 
