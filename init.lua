@@ -34,8 +34,8 @@ dofile(zwm.spoonPath.."config.lua")
 -- zwm
 function zwm:init()
    local config = dofile(os.getenv("HOME").."/.zwm/config.lua")
-   if config then
-      load_config()
+   if config ~= nil then
+      load_config(config)
    end
 end
 

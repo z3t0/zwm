@@ -1,5 +1,10 @@
 -- utilities
 
+function log(err)
+-- TODO: log file
+   error(err)
+end
+
 -- return the number of items in a table
 function table_count(t)
     local count = 0
@@ -87,6 +92,16 @@ function match_item(item, table)
     return nil
 end
 
+function exact_in_table(item, table)
+    for k, v in pairs(table) do
+        if item == k then
+            return {i = k, f = v}
+        end
+    end
+
+    return nil
+end
+
 -- hex to rgb
 function hex_to_rgb(hex)
     local hex = hex:gsub("#","")
@@ -115,4 +130,19 @@ function ansi_color(c)
         return 37
     end
 
+end
+
+function deepcopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[deepcopy(orig_key)] = deepcopy(orig_value)
+        end
+        setmetatable(copy, deepcopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
 end

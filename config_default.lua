@@ -1,7 +1,9 @@
 -- default configuration for zwm
 -- serves as an api documentation for now
 
-c = {}
+dofile(zwm.spoonPath.."utilities.lua")
+
+local c = {}
 
 -- General
 c.autoReload = true -- automatically reloads the configuration file
@@ -11,7 +13,15 @@ c.wm = {}
 
 -- Key bindings
 -- mod key
-c.mods = {}
-c.mods[1] = 'alt'
+local keybindings = {}
 
-zwm.config = c
+keybindings.mods = {}
+keybindings.mods[1] = 'alt'
+
+c.keybindings = keybindings
+
+zwm.config_default = c
+
+function get_default()
+   return deepcopy(zwm.config_default)
+end

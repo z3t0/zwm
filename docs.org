@@ -1,0 +1,13 @@
+** API
+*** Keybindings
+Add key bindings that can perform actions
+
+- Modifier keys
+
+**** Actions
+- Application
+- Execute command
+- Window management
+  
+*** Spaces
+- Each space can get assigned a string
